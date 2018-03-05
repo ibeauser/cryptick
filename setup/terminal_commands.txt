@@ -1,0 +1,57 @@
+go get github.com/lib/pq //need for Postgres access
+go build
+
+createdb crypto
+psql crypto
+
+DROP TABLE transaction;
+
+CREATE TABLE transaction (
+Exchange varchar(10) NOT NULL,
+Book varchar(10) NOT NULL,
+TransactionId integer NOT NULL UNIQUE,
+Timestamp integer,
+Side varchar(4),
+Price numeric(30,2),
+Amount numeric(30,8),
+PRIMARY KEY (Exchange,Book,TransactionId)
+);
+
+CREATE TABLE orderbook (
+ID serial NOT NULL PRIMARY KEY,
+Timestamp integer,
+AskPrice numeric(30,2),
+AskAmount numeric(30,8),
+BidPrice numeric(30,2),
+BidAmount numeric(30,8)
+);
+
+CREATE TABLE tradesummary (
+Exchange varchar(10) NOT NULL,
+Book varchar(10) NOT NULL,
+Timestamp integer NOT NULL UNIQUE,
+High24 numeric(30,2),
+Low24 numeric(30,2),
+LastPrice numeric(30,2),
+LowestSell numeric(30,2),
+HighestBuy numeric(30,2),
+Volume numeric(30,8),
+VWAP numeric(30,8),
+PRIMARY KEY (Exchange,Book,Timestamp)
+);
+
+
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO appUser;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO appUser;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO appUser;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO appUser;
+
+select pg_terminate_backend(pid)
+from pg_stat_activity
+where usename = 'appUser'
+ and state = 'idle'
+ and query_start < current_timestamp - interval '5 minutes'
+;
+
+postgres -D /usr/local/var/postgres
