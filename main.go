@@ -1,10 +1,10 @@
 package main
 
 import (
-	"cryptick/collect"
+	"github.com/ibeauser/cryptick/collect"
 	// "./read"
-	"cryptick/source"
 	"fmt"
+	"github.com/ibeauser/cryptick/source"
 	"time"
 )
 

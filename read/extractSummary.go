@@ -3,8 +3,8 @@ package read
 // tradesummary relation, crypto database
 
 import (
-	"cryotick/utils"
 	"fmt"
+	"github.com/ibeauser/cryotick/utils"
 	"strconv"
 )
 

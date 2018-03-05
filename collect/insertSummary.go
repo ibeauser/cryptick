@@ -1,8 +1,8 @@
 package collect
 
 import (
-	"cryptick/utils"
 	"encoding/json"
+	"github.com/ibeauser/cryptick/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
